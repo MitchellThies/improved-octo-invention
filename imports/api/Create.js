@@ -5,7 +5,8 @@ import { Session } from 'meteor/session';
 import { generateAccessCode, generateNewGame, generateNewPlayer } from './commonfunct.js';
 //import CreateGame from '../ui/CreateGame.js';
 
-import { browserHistory, Redirect } from 'react-router';
+//import { browserHistory, Redirect } from 'react-router';
+import  browserHistory  from '../ui/routes.js';
 /*
 export const CreateGamel = (player, game) => {  
   var pName = player;
@@ -30,6 +31,7 @@ class Create extends Component {
 			gName: this.props.gName,
 			gID: ''
 		};
+		this.browserHistory = browserHistory;
 	}
 /*
 	static verifyCreate (pName, gName) {
@@ -63,6 +65,7 @@ class Create extends Component {
   		Session.set("playerID", player.name);
   //     	//Session.set("currentView", "lobby");
   //     	//alert('A name was submitted: ' + Session.get("gameID")/*this.state.gName*/);
+  		this.browserHistory.push(Session.get("gameID"));
 		// //if (true){
 		var aCode = game.accessCode;
 			return 'game created';

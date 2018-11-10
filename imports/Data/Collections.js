@@ -1,5 +1,5 @@
-	export const Games = new Mongo.Collection('Games');
-	export const Players = new Mongo.Collection('Players');
+	//export const Games = new Mongo.Collection('Games');
+	//export const Players = new Mongo.Collection('Players');
 
 Games.allow({
   insert: function (userId, doc) {

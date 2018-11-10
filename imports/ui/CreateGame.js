@@ -17,6 +17,7 @@ class CreateGame extends Component {
 				pName: '',
 				gName: '',
         gCreated: false,
+        gID: null,
         game: null
 				};
 
@@ -25,6 +26,7 @@ class CreateGame extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.browserHistory = browserHistory;
+    this.pageChange = this.pageChange.bind(this);
 
 		//this.createG = new Create();
 		//this.obj = new commonfunct();
@@ -51,7 +53,7 @@ class CreateGame extends Component {
 		//Session.set('accessCode', 32);
 		//var gAC = generateAccessCode();
 		//var gAC = {generateAccessCode};
-		var gAC = generateAccessCode();
+		//var gAC = generateAccessCode();
 		//Session.set('accessCode', gAC);
     //this.props.history.push('/lobby');
     //this.setState({
@@ -59,7 +61,7 @@ class CreateGame extends Component {
     //});
     //browserHistory.push('/lobby');
     //alert('A name was submitted: ' + gAC/*this.state.gName*/);
-    event.preventDefault();
+    //event.preventDefault();
 		//Create(this.state.pName, this.state.gName);
 		//this.createG.verifyCreate(this.state.pName, this.state.gName);
 		//Create.verifyCreate(this.state.pName, this.state.gName);
@@ -77,16 +79,31 @@ class CreateGame extends Component {
          gCreated: true,
          game: gameCreated
        });
+    // var gAC = "/"; 
+    // gAC += Session.get("gameID");
+    // this.browserHistory.push(gAC);
     //}
     //alert('A name was submitted: ' + this.state.gCreated/*this.state.gName*/);
+    this.pageChange();
   }
 
+  pageChange(){
+    //this.browserHistory.push(Session.get("gameID"));
+    this.setState({gID: Session.get("gameID")});
+  }
+
+  // shouldComponentUpdate() {
+  //   if (this.state.gCreated === true) return false
+  //   if (this.state.gCreated === false) return true
+  // }
 
   render() {
 
     if (this.state.gCreated === true) {
       //return <Redirect to='/lobby' />
-      this.browserHistory.push('/' + this.state.game);//lobby');
+      this.browserHistory.push(Session.get("gameID"));//lobby');
+      //this.pageChange;
+      //return 'loading';
       //return <Redirect to=this.state.game.gID />
     }
 
@@ -112,3 +129,5 @@ class CreateGame extends Component {
 };
 
 export default CreateGame;
+/*      <h2>{this.state.game} tester {Session.get("gameID")}</h2>
+      <h3>{Session.get("playerID")}</h3>*/

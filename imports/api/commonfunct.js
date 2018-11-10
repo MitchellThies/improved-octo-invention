@@ -7,7 +7,7 @@ import { Session } from 'meteor/session';
 import { browserHistory } from 'react-router';
 
 	/*export const*/ Games = new Mongo.Collection('Games');
-	export const Players = new Mongo.Collection('Players');
+	/*export const*/ Players = new Mongo.Collection('Players');
 
 
  //function generateAccessCode(){
