@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Join from '../api/Join.js';
+//import Join from '../api/Join.js';
 
 class JoinGame extends Component {
   constructor(props) {

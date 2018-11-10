@@ -1,39 +1,87 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
+//import { Mongo } from 'meteor/mongo';
+import { Session } from 'meteor/session';
+import { generateAccessCode, generateNewGame, generateNewPlayer } from './commonfunct.js';
+//import CreateGame from '../ui/CreateGame.js';
 
-import { browserHistory } from 'react-router';
+import { browserHistory, Redirect } from 'react-router';
+/*
+export const CreateGamel = (player, game) => {  
+  var pName = player;
+  var gName = game;
+
+    for(var i=0; i < 6; i++){
+      code += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    //Session.set("accessCode", code);
+    return code;
+	};
+*/
+
+
 
 class Create extends Component {
 	constructor(props) {
 		super(props);
+		
 		this.state = {
-			pName: ''
+			pName: this.props.pName,
+			gName: this.props.gName,
+			gID: ''
 		};
 	}
-
+/*
 	static verifyCreate (pName, gName) {
 		alert('A name was submitted: ');
 	}
+*/
 
-  componentDidMount() {
-    browserHistory.push('/lobby');
-}
 
 /*
 	Verify () {
 		alert('A name was submitted: ' + this.state.pName);
 	}
+
 */
 
-	render () {
-	
+	setSession(game, player) {
+		Session.set("gameID", game.accessCode);
+      	Session.set("playerID", player._id);
+	}
 
-		//return (
-			alert('A name was submitted: ');
-		//);
+	render () {
+
+		this.state.gID = generateAccessCode();
+
+		var game  = [];
+		game = generateNewGame(this.state.gName, this.state.gID);
+		var player = generateNewPlayer(game, this.state.pName);
+  //   	//browserHistory.push('/lobby');
+  		Session.set("gameID", game.accessCode);
+  //     	//setSession(game, player);
+  		Session.set("playerID", player.name);
+  //     	//Session.set("currentView", "lobby");
+  //     	//alert('A name was submitted: ' + Session.get("gameID")/*this.state.gName*/);
+		// //if (true){
+		var aCode = game.accessCode;
+			return 'game created';
+		//}
+/*
+		return (
+			//alert('A name was submitted: ');
+	<Redirect to="/lobby"/>
+		);*/
 	};
 
 }
+/*
+class Create extends Component {
+
+	render () {
+		var bol = true;
+		return bol;
+	}
+};*/
 
 export default Create;

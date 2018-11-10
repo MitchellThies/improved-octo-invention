@@ -5,9 +5,10 @@ import createBrowserHistory from 'history/createBrowserHistory';
 // route components
 import App from './App.js';
 import lobby from './lobby.js';
+import gameView from './gameView.js';
 //import Contact from './components/views/contact';
 
-const browserHistory = createBrowserHistory();
+export default browserHistory = createBrowserHistory();
 
 export const renderRoutes = () => (
 
@@ -15,6 +16,8 @@ export const renderRoutes = () => (
     <Switch>
       <Route exact path="/" component={App}/>
       <Route exact path="/lobby" component={lobby}/>
+      <Route exact path="/game" component={gameView}/>
+      <Route exact path="/:gameID" component={lobby}/>
     </Switch>
   </Router>
 

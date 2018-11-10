@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
 import Task from './Task.js';
-import ScreenSelect from './ScreenSelect.js';
+//import ScreenSelect from './ScreenSelect.js';
 import CreateGame from './CreateGame.js';
 import JoinGame from './JoinGame.js';
 import Join from '../api/Join.js';
 
 import { browserHistory } from 'react-router';
 // App component - represents the whole app
-function WarningBanner(props) {
-  if (!props.warn) {
-    return null;
-  }
+// function WarningBanner(props) {
+//   if (!props.warn) {
+//     return null;
+//   }
 
-  return //renderNewgame();
-  (
-  <form id="create-game">
-    <div class="">
-      <input type="text" id="player-name" name="playerName" placeholder='enter your name'/>
-      <div class="button-container">
-        <input type="submit" value='create game'/>
-        <button class="btn-back">back</button>
-      </div>
-    </div>
-  </form>
-  );
-}
+//   return //renderNewgame();
+//   (
+//   <form id="create-game">
+//     <div class="">
+//       <input type="text" id="player-name" name="playerName" placeholder='enter your name'/>
+//       <div class="button-container">
+//         <input type="submit" value='create game'/>
+//         <button class="btn-back">back</button>
+//       </div>
+//     </div>
+//   </form>
+//   );
+// }
 
 export default class App extends React.Component {
 /*
@@ -110,18 +110,18 @@ export default class App extends React.Component {
 }
 
 //var mfunc =
-function mainScreen(props) {
- return
-	     <div className="container">
-        <header>
-          <h1>Todo List</h1>
-        </header>
-        <ul>
-          <button id="btn-new-game" onClick={this.renderNewGame()}>new game</button>
-					<button id="btn-join-game">join game</button>
-				</ul>
-			</div>;
-}
+// function mainScreen(props) {
+//  return
+// 	     <div className="container">
+//         <header>
+//           <h1>Todo List</h1>
+//         </header>
+//         <ul>
+//           <button id="btn-new-game" onClick={this.renderNewGame()}>new game</button>
+// 					<button id="btn-join-game">join game</button>
+// 				</ul>
+// 			</div>;
+// }
 /*
 old {
      <div className="container">
