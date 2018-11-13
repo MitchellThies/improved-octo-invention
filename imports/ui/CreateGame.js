@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 
 import Create from '../api/Create.js';
-import { commonfunct } from '../api/commonfunct.js';
+//import { CreateGamel } from '../api/Create.js';
+//import  commonfunct  from '../api/commonfunct.js';
+import { generateAccessCode } from '../api/commonfunct.js';
+import history from 'history'
+//import { browserHistory, Redirect } from 'react-router';
+import  browserHistory  from '../ui/routes.js';
 
 class CreateGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-				pName: ''
-				//gName: ''
+				pName: '',
+				gName: '',
+        gCreated: false,
+        gID: null,
+        game: null
 				};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.browserHistory = browserHistory;
+    this.pageChange = this.pageChange.bind(this);
 
 		//this.createG = new Create();
 		//this.obj = new commonfunct();
+		//this.gAC = new Session.get('accessCode');
   }
 
   handleChange(event) {
@@ -35,26 +48,81 @@ class CreateGame extends Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + commonfunct.generateAccessCode()/*this.state.gName*/);
-    event.preventDefault();
+		//Meteor.call("generateAccessCode");
+		//obj.generateAccessCode();
+		//Session.set('accessCode', 32);
+		//var gAC = generateAccessCode();
+		//var gAC = {generateAccessCode};
+		//var gAC = generateAccessCode();
+		//Session.set('accessCode', gAC);
+    //this.props.history.push('/lobby');
+    //this.setState({
+    //  gCreated: true
+    //});
+    //browserHistory.push('/lobby');
+    //alert('A name was submitted: ' + gAC/*this.state.gName*/);
+    //event.preventDefault();
 		//Create(this.state.pName, this.state.gName);
 		//this.createG.verifyCreate(this.state.pName, this.state.gName);
 		//Create.verifyCreate(this.state.pName, this.state.gName);
+    //return <Create player={this.state.pName} game={this.state.gName}/>;
+    var gameCreated = <Create pName={this.state.pName} gName={this.state.gName}/>;
+    //this.state.game = 'test';//gameCreated;
+      // this.setState({
+      //    game: gameCreated
+      //  });
+    Session.set("gameType", this.state.gName);
+		//alert('A name was submitted: ' + gameCreated.accessCode/*this.state.gName*/);
+    //Session.set("ID", gameCreated.accessCode)
+    //if (gameCreated){
+      this.setState({
+         gCreated: true,
+         game: gameCreated
+       });
+    // var gAC = "/"; 
+    // gAC += Session.get("gameCode");
+    // this.browserHistory.push(gAC);
+    //}
+    //alert('A name was submitted: ' + this.state.gCreated/*this.state.gName*/);
+    this.pageChange();
+    this.browserHistory.push(Session.get("gameCode"));
   }
 
+  pageChange(){
+    //this.browserHistory.push(Session.get("gameCode"));
+    this.setState({gID: Session.get("gameCode")});
+  }
+
+  // shouldComponentUpdate() {
+  //   if (this.state.gCreated === true) return false
+  //   if (this.state.gCreated === false) return true
+  // }
 
   render() {
+
+    if (this.state.gCreated === true) {
+      //return <Redirect to='/lobby' />
+      //this.browserHistory.push(Session.get("gameCode"));//lobby');
+      {this.pageChange};
+      //return 'loading';
+      //return <Redirect to=this.state.game.gID />
+    }
+
     return (
 		<form id="create-game" onSubmit={this.handleSubmit}>
-    <div class="">
+    <div className="">
       <input type="text" id="player-name" value={this.state.pName} onChange= {this.handleInputChange}
 			name="pName" placeholder='enter your name'/>
 			<input type="radio" id="game-type" value="quiz-game" onChange= {this.handleInputChange}
 			name="gName"/> Quiz Game 
-      <div class="button-container">
+      <input type="radio" id="game-type" value="lying-game" onChange= {this.handleInputChange}
+      name="gName"/> Lying Game 
+      <div className="button-container">
         <input type="submit" value='Create Game'/>
-        <button class="btn-back">back</button>
+        <button className="btn-back">back</button>
       </div>
+      <h2>{this.state.game} {Session.get("gameCode")}</h2>
+      <h3>{Session.get("playerID")}</h3>
     </div>
   	</form>
     );
@@ -62,3 +130,5 @@ class CreateGame extends Component {
 };
 
 export default CreateGame;
+/*      <h2>{this.state.game} tester {Session.get("gameCode")}</h2>
+      <h3>{Session.get("playerID")}</h3>*/
