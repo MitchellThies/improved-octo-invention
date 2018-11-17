@@ -40,7 +40,7 @@ class Join extends Component {
     game = Games.findOne({accessCode: this.state.rName})
 
 
-    var player = generateNewPlayer(game, this.state.pName);
+    var player = generateNewPlayer(game, this.state.pName, false);
   //    //browserHistory.push('/lobby');
       Session.set("gameCode", game.accessCode);
   //      //setSession(game, player);

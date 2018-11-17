@@ -8,6 +8,7 @@ import { browserHistory } from 'react-router';
 
 	/*export const*/ Games = new Mongo.Collection('Games');
 	/*export const*/ Players = new Mongo.Collection('Players');
+	Questions = new Mongo.Collection('Questions');
 
 
  //function generateAccessCode(){
@@ -40,11 +41,13 @@ export const generateNewGame = (gameMode, gID) =>{
   return game;
 };
 
-export const generateNewPlayer = (game, name) =>{
+export const generateNewPlayer = (game, name, bHost) =>{
   var player = {
     gameID: game._id,
+    accessCode: game.accessCode,
     name: name,
-    score: null
+    score: null,
+    host: bHost
     //isSpy: false,
     //isFirstPlayer: false
   };
@@ -52,6 +55,16 @@ export const generateNewPlayer = (game, name) =>{
   var playerID = Players.insert(player);
 
   return Players.findOne(playerID);
+};
+
+export const checkPlayerHost = (gameID, pName) =>{
+	var player = Players.findOne({accessCode: gameID, name: pName});
+	//var player = playerObj;
+	if (player.host === true) {
+		return true;
+	} else {
+		return false;
+	}
 };
 /*
 class commonfunct extends Component {

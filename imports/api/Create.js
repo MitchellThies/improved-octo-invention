@@ -58,7 +58,7 @@ class Create extends Component {
 
 		var game  = [];
 		game = generateNewGame(this.state.gName, this.state.gID);
-		var player = generateNewPlayer(game, this.state.pName);
+		var player = generateNewPlayer(game, this.state.pName, true);
   //   	//browserHistory.push('/lobby');
   		Session.set("gameCode", game.accessCode);
   //     	//setSession(game, player);
