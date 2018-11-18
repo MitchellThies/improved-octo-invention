@@ -62,7 +62,9 @@ class Create extends Component {
   //   	//browserHistory.push('/lobby');
   		Session.set("gameCode", game.accessCode);
   //     	//setSession(game, player);
-  		Session.set("playerID", player.name);
+  		Session.set("playerName", player.name);
+  		Session.set("playerID", player._id);
+
   //     	//Session.set("currentView", "lobby");
   //     	//alert('A name was submitted: ' + Session.get("gameCode")/*this.state.gName*/);
   		this.browserHistory.push(Session.get("gameCode"));

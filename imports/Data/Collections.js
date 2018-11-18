@@ -24,6 +24,30 @@ Players.allow({
     return true;
   }
 });
+
+Questions.allow({
+  insert: function (userId, doc) {
+    return true;
+  },
+  update: function (userId, doc, fields, modifier) {
+    return true;
+  },
+  remove: function (userId, doc) {
+    return true;
+  }
+});
+
+Rounds.allow({
+  insert: function (userId, doc) {
+    return true;
+  },
+  update: function (userId, doc, fields, modifier) {
+    return true;
+  },
+  remove: function (userId, doc) {
+    return true;
+  }
+});
 /*
 Games.deny({insert: function(userId, game) {
   game.createdAt = new Date().valueOf();

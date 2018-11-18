@@ -111,7 +111,7 @@ export default class Lobby extends React.Component {
     const listItems = playID.map((playID) =>
       <li>{playID.name}</li>
     );
-    var pName = Session.get("playerID");
+    var pName = Session.get("playerName");
     var pHost = checkPlayerHost(gameCode, pName);
 
     return (
@@ -127,7 +127,7 @@ export default class Lobby extends React.Component {
         <h3>gameCode: {Session.get("gameCode")}</h3>
         <h4>gameType: {gameType} gameID: {gameID}</h4>
         <h5>{this.state.game} tester {Session.get("gameCode")}</h5>
-        <h6>{Session.get("playerID")}</h6>
+        <h6>{Session.get("playerName")}</h6>
         {pHost ? 
           (<form id="start-game" onSubmit={this.handleSubmit}>
           <div className="start">

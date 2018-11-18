@@ -9,6 +9,7 @@ import { browserHistory } from 'react-router';
 	/*export const*/ Games = new Mongo.Collection('Games');
 	/*export const*/ Players = new Mongo.Collection('Players');
 	Questions = new Mongo.Collection('Questions');
+	Rounds = new Mongo.Collection('Rounds');
 
 
  //function generateAccessCode(){
@@ -32,7 +33,9 @@ export const generateNewGame = (gameMode, gID) =>{
     endTime: null,
     paused: false,
     pausedTime: null,
-    gameType: gameMode
+    gameType: gameMode,
+    roundNum: 0,
+    players: 0
   };
 
   var gameID = Games.insert(game);
@@ -53,14 +56,59 @@ export const generateNewPlayer = (game, name, bHost) =>{
   };
 
   var playerID = Players.insert(player);
+  Games.update(game._id, { $inc: {players: 1}});
 
   return Players.findOne(playerID);
+};
+
+export const generateNewRound = (game, rNum, pSelect) =>{
+	var round = {
+		gameID: game._id,
+		roundNum: rNum,
+		playerSelect: pSelect,
+		category: null,
+		Question1: null,
+		Question2: null,
+		Question3: null,
+		Question4: null
+	};
+	var roundID = Rounds.insert(round);
+
+	return Rounds.findOne(roundID);
 };
 
 export const checkPlayerHost = (gameID, pName) =>{
 	var player = Players.findOne({accessCode: gameID, name: pName});
 	//var player = playerObj;
 	if (player.host === true) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
+export const getQuestion = (cCategory) =>{
+	var question = Questions.find({category: cCategory});
+	return question;
+};
+
+export const getRandomPlayer = (game) =>{
+	//requires more work
+	//var listPlayers = [];
+	//listPlayers = Players.find({gameID: game._id});
+	var listPlayers = Players.findOne({gameID: game._id});
+	return listPlayers._id;
+};
+
+export const getPlayerCount = (game) =>{
+	var pCount = Players.count({gameID:_id});
+	return pCount;
+};
+
+export const setRoundCategory = (round, cCategory) =>{
+	Rounds.update(round._id, { $set: {category: cCategory}});
+	uRound = Rounds.find(round);
+	if (uRound.category === cCategory) {
 		return true;
 	} else {
 		return false;

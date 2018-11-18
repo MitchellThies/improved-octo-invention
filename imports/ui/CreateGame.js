@@ -122,7 +122,7 @@ class CreateGame extends Component {
         <button className="btn-back">back</button>
       </div>
       <h2>{this.state.game} {Session.get("gameCode")}</h2>
-      <h3>{Session.get("playerID")}</h3>
+      <h3>{Session.get("playerName")}</h3>
     </div>
   	</form>
     );

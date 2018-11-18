@@ -29,7 +29,7 @@ class Join extends Component {
 
   setSession(game, player) {
     Session.set("gameCode", game.accessCode);
-        Session.set("playerID", player._id);
+        Session.set("playername", player._id);
   }
 
   render () {
@@ -44,7 +44,8 @@ class Join extends Component {
   //    //browserHistory.push('/lobby');
       Session.set("gameCode", game.accessCode);
   //      //setSession(game, player);
-      Session.set("playerID", player.name);
+      Session.set("playerName", player.name);
+      Session.set("playerID", player._id);
   //      //Session.set("currentView", "lobby");
   //      //alert('A name was submitted: ' + Session.get("gameCode")/*this.state.gName*/);
     this.browserHistory.push(Session.get("gameCode"));

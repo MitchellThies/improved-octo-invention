@@ -17,7 +17,7 @@ class GameView extends Component {
 				pName: '',
 				gName: 'quiz',
         gCreated: false,
-        game: null,
+        game: Games.findOne({accessCode: Session.get("gameCode")}),//null,
         status: "waitingForPlayers"
 				};
 
@@ -70,9 +70,10 @@ class GameView extends Component {
     <div className="container">
         <header>
           <h1>myPartyGame</h1>
+          <h2>Room Code: {this.state.game.accessCode}</h2>
         </header>
       
-        <QuizView />
+        <QuizView game={this.state.game}/>
     </div>
     );
   }
