@@ -1,0 +1,23 @@
+// Database guide//
+IP: 138.197.166.167
+port: 3306
+username: root
+password: RabutThies
+db: quiz_database
+Tables:  question, user
+
+question:
+id, type, category, question, correctA, correctB, correctC, wrongA, wrongB, wrongC
+notes: all are character except id is int, for muti choice questions correct B and correct C are null, all are in order of id 
+categories inlcude:
+general knowlegde
+entertainment
+sports
+science & tech
+Canada
+biology & nature
+	
+
+user:
+id, userName, passWord, totalPlays, totalWins, quizPlays, quizWins, assassinPlays, assassinWins
+notes: all except userName/passWord are int

@@ -1,0 +1,85 @@
+//mySQL integration//
+// for additional info see: https://github.com/numtel/meteor-mysql/blob/binlog/getting_started.md 
+
+/////Adding package to application/////
+meteor add numtel:mysql
+
+////Setting up mySQL connection////
+var dbConnectionSettings = {
+	host: "138.197.166.167", 
+	port: 3306,
+	database: "quiz_database",
+	user: "root",
+	password: "RabutThies"
+};
+
+var db = mysql.createConnection(dbConnectionSettings);
+
+db.connect();
+
+dbConnectionSettings["minInterval"] = 1000;
+
+db.initBinlog(dbConnectionSettings);
+
+/// publish example////
+Meteor.publish('playerScore', function(name){
+  db.select(this, {
+    query: function(esc, escId){
+      return 'select `score` from `players` where `name`=' + esc(name);
+    },
+    triggers: [
+      {
+        table: 'players',
+        condition: function(esc, escId){
+          return '$ROW.name = ' + esc(name);
+        }
+      }
+    ]
+  });
+});
+//// subscribe example///////
+myScore = new MysqlSubscription('playerScore', 'Maxwell');
+
+// Get updates using event callback
+myScore.addEventListener('update', function(index, msg){
+  console.log(msg.fields.score);
+});
+
+// Or use data reactively (on the client)
+Template.scoreboard.helpers({
+  myScore: function () {
+    return myScore.reactive()[0].score;
+  }
+});
+
+/// Examples at
+https://github.com/numtel/meteor-mysql/blob/binlog/getting_started.md
+https://github.com/numtel/meteor-mysql/tree/binlog
+
+
+///// mySQL /////
+////get questions
+SELECT * FROM question WHERE category = {categoryName} ORDER BY Rand() LIMIT {questionTotal};
+// categoryName is one of the six categories, which ever type to be returned
+// questionTotal is the number of questions to be returned
+
+////update stats-post game
+//total games played(if registered)
+var plays = SELECT totalPlays FROM user where userName = {user};
+plays = plays+1
+UPDATE user SET totalPlays = {plays} WHERE userName = {user};
+//repeat for stats: totalWins, quizPlays, quizWins, etc
+
+//stats page
+//variable 'user' required
+SELECT totalPlays FROM user where userName = {user};
+SELECT totalWins FROM user where userName = {user};
+SELECT quizPlays FROM user where userName = {user};
+SELECT quizWins FROM user where userName = {user};
+SELECT assassinPlays FROM user where userName = {user};
+SELECT assassinWins FROM user where userName = {user};
+
+
+
+
+
