@@ -1,14 +1,14 @@
 // Database guide//
-IP: 138.197.166.167
-port: 3306
+IP: 159.203.10.3
+port: 27017
 username: root
 password: RabutThies
-db: quiz_database
-Tables:  question, user
+db: partGame
+collections:  quizGame, user
 
 question:
 id, type, category, question, correctA, correctB, correctC, wrongA, wrongB, wrongC
-notes: all are character except id is int, for muti choice questions correct B and correct C are null, all are in order of id 
+notes: all are character except id is int, for muti choice questions correct B and correct C are excluded, all are in order of id 
 categories inlcude:
 general knowlegde
 entertainment
