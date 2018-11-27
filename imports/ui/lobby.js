@@ -12,20 +12,6 @@ import { checkPlayerHost } from '../api/commonfunct.js';
 
 export default class Lobby extends React.Component {
 
-  // renderNewGame() {
-  // return(
-  // <form id="create-game">
-  //   <div class="">
-  //     <input type="text" id="player-name" name="playerName" placeholder='enter your name'/>
-  //     <div class="button-container">
-  //       <input type="submit" value='create game'/>
-  //       <button class="btn-back">back</button>
-  //     </div>
-  //   </div>
-  // </form>
-  // );
-  // }
-
   constructor(props) {
     super(props);
     this.state = {showWarning: true};
@@ -53,21 +39,6 @@ export default class Lobby extends React.Component {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-  // handleToggleClick() {
-  //   this.setState(prevState => ({
-  //     showWarning: !prevState.showWarning
-  //   }));
-  // }
-
-  // handleJGClick() {
-  //   this.setState({ jGame: true });
-		// this.setState({ cGame: false });
-  // }
-
-  // handleCGClick() {
-  //   this.setState({ cGame: true });
-		// this.setState({ jGame: false });
-  // }
 
 
   // rednerPlayers(){

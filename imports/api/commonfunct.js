@@ -10,6 +10,7 @@ import { browserHistory } from 'react-router';
 	/*export const*/ Players = new Mongo.Collection('Players');
 	Questions = new Mongo.Collection('Questions');
 	Rounds = new Mongo.Collection('Rounds');
+	PlayerAnswers = new Mongo.Collection('PlayerAnswers');
 
 
  //function generateAccessCode(){
@@ -23,6 +24,26 @@ export const generateAccessCode = () => {
     //Session.set("accessCode", code);
     return code;
 	};
+
+
+/*
+Lying game functions
+*/
+export const assignAssassin = (game) =>{
+	var pList = [];
+	var pList = Players.find({gameID: game._id});
+	var i = pList.length - 1;
+	var j = Math.floor(Math.random() * (i + 1));
+
+	Players.update(pList[j]._id, { $set: {isAssassin: true}});
+	return pList[j];
+};
+
+export const checkAssassin = (pID) =>{
+	var pObj = Players.findOne({_id: pID});
+	return pObj.isAssassin;
+};
+
 
 export const generateNewGame = (gameMode, gID) =>{
   var game = {
@@ -50,7 +71,9 @@ export const generateNewPlayer = (game, name, bHost) =>{
     accessCode: game.accessCode,
     name: name,
     score: null,
-    host: bHost
+    host: bHost,
+    isAssassin: false,
+    isDead: false
     //isSpy: false,
     //isFirstPlayer: false
   };
@@ -62,9 +85,15 @@ export const generateNewPlayer = (game, name, bHost) =>{
 };
 
 export const generateNewRound = (game, rNum, pSelect) =>{
+	if (rNum === 1 || rNum === 3 || rNum === 5){
+		var qNum = 3;
+	} else {
+		var qNum = 4;
+	}
 	var round = {
 		gameID: game._id,
 		roundNum: rNum,
+		numQuestions: qNum,
 		playerSelect: pSelect,
 		category: null,
 		Question1: null,
@@ -77,6 +106,31 @@ export const generateNewRound = (game, rNum, pSelect) =>{
 	return Rounds.findOne(roundID);
 };
 
+export const generateNewPlayerAnswers = (game, round, playerID) =>{
+	// if (rNum === 1 || rNum === 3 || rNum === 5){
+	// 	var qNum = 3;
+	// } else {
+	// 	var qNum = 4;
+	// }
+	var pAnswers = {
+		gameID: game._id,
+		roundID: round._id,
+		roundNum: round.roundNum,
+		numQuestions: round.numQuestions,
+		player: playerID,
+		pReady: false,
+		//category: null,
+		Question1: null,
+		Question2: null,
+		Question3: null,
+		Question4: null
+	};
+	var pAnswersID = PlayerAnswers.insert(pAnswers);
+
+	return PlayerAnswers.findOne(pAnswersID);
+};
+
+
 export const checkPlayerHost = (gameID, pName) =>{
 	var player = Players.findOne({accessCode: gameID, name: pName});
 	//var player = playerObj;
@@ -87,9 +141,28 @@ export const checkPlayerHost = (gameID, pName) =>{
 	}
 };
 
-export const getQuestion = (cCategory) =>{
-	var question = Questions.find({category: cCategory});
+export const checkPlayersReady = (game, round) =>{
+	var playersReady = PlayerAnswers.count({roundID: round._id, pReady: true});
+	if (playersReady === getPlayerCount(game))
+		return true;
+	else
+		return false;
+
+};
+
+//export 
+const setPlayersReady = (pAnswer, status) =>{
+PlayerAnswers.update(pAnswer._id, { $set: {pReady: status}});
+};
+
+export const getQuestion = (questionID) =>{
+	var question = Questions.findOne({_id: questionID});
 	return question;
+};
+
+export const getQuestionID = (cCategory) =>{
+	var question = Questions.findOne({category: cCategory});
+	return question._id;
 };
 
 export const getRandomPlayer = (game) =>{
@@ -107,13 +180,66 @@ export const getPlayerCount = (game) =>{
 
 export const setRoundCategory = (round, cCategory) =>{
 	Rounds.update(round._id, { $set: {category: cCategory}});
-	uRound = Rounds.find(round);
-	if (uRound.category === cCategory) {
-		return true;
+	//uRound = 
+	return Rounds.find(round);
+	// if (uRound.category === cCategory) {
+	// 	return true;
+	// } else {
+	// 	return false;
+	// }
+};
+
+export const setRoundQuestions = (round) =>{
+	if (round.numQuestions === 3) {
+		var q1 = getQuestionID(round.category);
+		var q2 = getQuestionID(round.category);
+		var q3 = getQuestionID(round.category);
+
+		Rounds.update(round._id, { $set: {Question1: q1, Question2: q2, Question3: q3}})
+		return Rounds.findOne(round._id);
 	} else {
-		return false;
+		var q1 = getQuestionID(round.category);
+		var q2 = getQuestionID(round.category);
+		var q3 = getQuestionID(round.category);
+		var q4 = getQuestionID(round.category);
+
+		Rounds.update(round._id, { $set: {Question1: q1, Question2: q2, Question3: q3, Question4: q4}})
+		return Rounds.findOne(round._id);
 	}
 };
+
+export const setNextRound = (game, round) =>{
+	Games.update(game, { $inc: {roundNum: 1}});
+	uGame = Games.findOne(game);
+	var nRound = generateNewRound(game, uGame.roundNum, getRandomPlayer(game));
+	return nRound;
+};
+
+export const setPlayerAnswer = (pAnswer, pAnswerObj, qNum) =>{
+	if (qNum === 1)
+		PlayerAnswers.update(pAnswerObj, { $set: {Question1: pAnswer}});
+	else if (qNum === 2)
+		PlayerAnswers.update(pAnswerObj, { $set: {Question2: pAnswer}});
+	else if (qNum === 3)
+		PlayerAnswers.update(pAnswerObj, { $set: {Question3: pAnswer}});
+	else if (qNum === 4)
+		PlayerAnswers.update(pAnswerObj, { $set: {Question4: pAnswer}});
+	return PlayerAnswers.findOne(pAnswerObj); //{_id: pAnswerObj._id});
+
+};
+
+export const getNextQuestion = (qNum, round) =>{
+	if (qNum === 0)
+		return getQuestion(round.Question1);
+	if (qNum === 1)
+		return getQuestion(round.Question2);
+	if (qNum === 2)
+		return getQuestion(round.Question3);
+	if (qNum === 3)
+		return getQuestion(round.Question4);
+	return null;
+};
+
 /*
 class commonfunct extends Component {
 	constructor(props) {
@@ -136,4 +262,8 @@ class commonfunct extends Component {
 }
 
 export default commonfunct;
+
+db.Rounds.update({_id: 'wMtHrFr3AXa6Lvn8Z', {$set: {category: "General Knowledge"}}})
+
+
 */

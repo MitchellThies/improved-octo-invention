@@ -7,4 +7,5 @@ Meteor.startup(() => {
 	export const Players = new Mongo.Collection('Players');
   export const Questions = new Mongo.Collection('Questions');
   export const Rounds = new Mongo.Collection('Rounds');
+  export const PlayerAnswers = new Mongo.Collection('PlayerAnswers');
 });

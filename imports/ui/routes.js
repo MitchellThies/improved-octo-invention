@@ -7,6 +7,7 @@ import App from './App.js';
 import lobby from './lobby.js';
 import GameView from './GameView.js';
 import CategoryView from './CategoryView.js';
+import QuestionView from './QuestionView.js';
 //import Contact from './components/views/contact';
 
 export default browserHistory = createBrowserHistory();
@@ -19,6 +20,7 @@ export const renderRoutes = () => (
       <Route exact path="/lobby" component={lobby}/>
       <Route exact path="/game" component={GameView}/>
       <Route exact path="/CategoryView" component={CategoryView}/>
+      <Route exact path="/qv" component={QuestionView}/>
       <Route exact path="/:gameID" component={GameView}/>
     </Switch>
   </Router>

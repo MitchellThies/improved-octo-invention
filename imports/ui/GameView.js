@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import Create from '../api/Create.js';
 import QuizView from './QuizView.js';
 import Lobby from './lobby.js';
+import LyingView from './LyingView.js';
 //import { CreateGamel } from '../api/Create.js';
 //import  commonfunct  from '../api/commonfunct.js';
 import { generateAccessCode } from '../api/commonfunct.js';
@@ -66,6 +67,7 @@ class GameView extends Component {
     //     </div>
     //     )
     // }
+    if (this.state.game.gameType === "quiz-game") {
     return (
     <div className="container">
         <header>
@@ -76,6 +78,18 @@ class GameView extends Component {
         <QuizView game={this.state.game}/>
     </div>
     );
+
+    } else if (this.state.game.gameType === "lying-game") {
+      return (
+    <div className="container">
+        <header>
+          <h1>myPartyGame</h1>
+          <h2>Room Code: {this.state.game.accessCode}</h2>
+        </header>
+        <LyingView game={this.state.game}/>
+    </div>
+    );
+    }
   }
 };
 

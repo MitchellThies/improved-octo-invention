@@ -6,7 +6,7 @@ import Lobby from './lobby.js';
 import SplashView from  './SplashView.js';
 import QuestionView from './QuestionView.js';
 import CategoryView from './CategoryView.js';
-import { generateNewRound, getRandomPlayer } from '../api/commonfunct.js';
+import { generateNewRound, getRandomPlayer, setRoundQuestions } from '../api/commonfunct.js';
 
 
 class QuizView extends Component {
@@ -24,6 +24,7 @@ class QuizView extends Component {
 			round: false,
 			roundObj: null,
 			roundNum: 0
+			//qNum: 0
 			};
 		//this.setState({game: Games.findOne({accessCode: this.state.gAC})});
 
@@ -53,6 +54,24 @@ class QuizView extends Component {
 	} 
 	if (this.state.game.state === "1-round"){
 		this.setState({round: true});
+	}
+	if (this.state.game.state === "2-round"){
+		var round2 = setNextRound(this.state.game, this.state.round);
+	}
+	if (this.state.game.state === "3-round"){
+		var round3 = setNextRound(this.state.game, this.state.round);
+	}
+	if (this.state.game.state === "4-round"){
+		var round4 = setNextRound(this.state.game, this.state.round);
+	}
+	if (this.state.game.state === "5-round"){
+		var round5 = setNextRound(this.state.game, this.state.round);
+	}
+	if (this.state.roundNum > 0) {
+		this.setState({roundObj: Rounds.findOne({gameID: this.state.game._id, roundNum: this.state.roundNum})});
+		if (this.state.roundObj.question1 == null && this.state.roundObj.category != null) {
+			var testr = setRoundQuestions(this.state.roundObj);
+		}
 	}
   }
 
@@ -98,50 +117,57 @@ class QuizView extends Component {
 		var gst = Session.get("gameStart");
 		if (this.state.gCreated === true){
 		//if ()
-			if (this.state.roundNum === 1) {
+			//if (this.state.roundNum === 1) {
+
+				if (this.state.round === true) {
+
+					if (this.state.roundObj.category != null) {
+						return (
+						<div className='QuizView'>
+						<h1>Quiz Game</h1>
+						<div>
+						<QuestionView game={this.state.game} round={this.state.roundObj}/>
+						</div>
+						</div>
+						)
+					} else {
+
+					if (this.state.roundObj.playerSelect === this.state.pID) {
+						return(
+						<div className='QuizView'>
+						<h1>Quiz Game</h1>
+						<div>
+						<CategoryView game={this.state.game} round={this.state.roundObj}/>
+						</div>
+						</div>
+						)
+					} else {
+						return (
+						<div className='QuizView'>
+						<h1>Quiz Game</h1>
+						<div>
+						<SplashView message="Waiting for category to be selected" time={50} 
+						game={this.state.game}/>
+						</div>
+						</div>
+						)
+					}
+				}
+
+					
+				} else {
+					return (
+					<div className='QuizView'>
+					<h1>Quiz Game</h1>
+					<div>
+					<SplashView message="Game starting soon" time={2} game={this.state.game}/>
+					</div>
+					</div>
+					)
+				}
+			//}
 
 
-			if (this.state.roundObj.playerSelect === this.state.pID) {
-				return(
-				<div className='QuizView'>
-				<h1>Quiz Game</h1>
-				<div>
-				<CategoryView game={this.state.game}/>
-				</div>
-				</div>
-				)
-			} else {
-				return (
-				<div className='QuizView'>
-				<h1>Quiz Game</h1>
-				<div>
-				<SplashView message="Waiting for category to be selected" time={50} 
-				game={this.state.game}/>
-				</div>
-				</div>
-				)
-			}
-
-			if (this.state.round === true) {
-				return (
-				<div className='QuizView'>
-				<h1>Quiz Game</h1>
-				<div>
-				<QuestionView game={this.state.game}/>
-				</div>
-				</div>
-				)
-			} else {
-				return (
-				<div className='QuizView'>
-				<h1>Quiz Game</h1>
-				<div>
-				<SplashView message="Game starting soon" time={3} game={this.state.game}/>
-				</div>
-				</div>
-				)
-			}
-		}
 
 		} else {
 
